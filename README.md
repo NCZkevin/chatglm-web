@@ -1,6 +1,6 @@
 # ChatGLM Web
 
-![cover](./docs/c1.png)
+![cover](./docs/index.png)
 
 - [ChatGLM Web](#chatglm-web)
 	- [介绍](#介绍)

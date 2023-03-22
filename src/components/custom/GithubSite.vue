@@ -5,8 +5,8 @@
       Chanzhaoyu/chatgpt-web
     </a>
     <span>by</span>
-    <a href="https://github.com/WenJing95" target="_blank" class="text-blue-500">
-      WenJing
+    <a href="https://github.com/NCZkevin/chatglm-web" target="_blank" class="text-blue-500">
+      NCZkevin/chatglm-web
     </a>
   </div>
 </template>

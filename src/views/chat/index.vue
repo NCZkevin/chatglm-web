@@ -1,9 +1,10 @@
 <script setup lang='ts'>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { NButton, NInput, useDialog } from 'naive-ui'
+import { NButton, NInput, useDialog, useMessage } from 'naive-ui'
 import Recorder from 'recorder-core/recorder.mp3.min'
 import { Message } from './components'
+import html2canvas from 'html2canvas'
 import { useScroll } from './hooks/useScroll'
 import { useChat } from './hooks/useChat'
 import { useCopyCode } from './hooks/useCopyCode'
@@ -17,6 +18,7 @@ let controller = new AbortController()
 
 const route = useRoute()
 const dialog = useDialog()
+const ms = useMessage()
 
 const chatStore = useChatStore()
 const userStore = useUserStore()
@@ -570,6 +572,48 @@ watch(
   },
 )
 
+function handleExport() {
+  if (loading.value)
+    return
+
+  const d = dialog.warning({
+    title: t('chat.exportImage'),
+    content: t('chat.exportImageConfirm'),
+    positiveText: t('common.yes'),
+    negativeText: t('common.no'),
+    onPositiveClick: async () => {
+      try {
+        d.loading = true
+        const ele = document.getElementById('image-wrapper')
+        const canvas = await html2canvas(ele as HTMLDivElement, {
+          useCORS: true,
+        })
+        const imgUrl = canvas.toDataURL('image/png')
+        const tempLink = document.createElement('a')
+        tempLink.style.display = 'none'
+        tempLink.href = imgUrl
+        tempLink.setAttribute('download', 'chat-shot.png')
+        if (typeof tempLink.download === 'undefined')
+          tempLink.setAttribute('target', '_blank')
+
+        document.body.appendChild(tempLink)
+        tempLink.click()
+        document.body.removeChild(tempLink)
+        window.URL.revokeObjectURL(imgUrl)
+        d.loading = false
+        ms.success(t('chat.exportSuccess'))
+        Promise.resolve()
+      }
+      catch (error: any) {
+        ms.error(t('chat.exportFailed'))
+      }
+      finally {
+        d.loading = false
+      }
+    },
+  })
+}
+
 function handleDelete(index: number) {
   if (loading.value)
     return
@@ -585,20 +629,20 @@ function handleDelete(index: number) {
   })
 }
 
-// function handleClear() {
-//   if (loading.value)
-//     return
-//
-//   dialog.warning({
-//     title: t('chat.clearChat'),
-//     content: t('chat.clearChatConfirm'),
-//     positiveText: t('common.yes'),
-//     negativeText: t('common.no'),
-//     onPositiveClick: () => {
-//       chatStore.clearChatByUuid(+uuid, t('chat.newChat'))
-//     },
-//   })
-// }
+function handleClear() {
+  if (loading.value)
+    return
+
+  dialog.warning({
+    title: t('chat.clearChat'),
+    content: t('chat.clearChatConfirm'),
+    positiveText: t('common.yes'),
+    negativeText: t('common.no'),
+    onPositiveClick: () => {
+      chatStore.clearChatByUuid(+uuid, t('chat.newChat'))
+    },
+  })
+}
 
 function handleEnter(event: KeyboardEvent) {
   if (!isMobile.value) {
@@ -682,9 +726,12 @@ onUnmounted(() => {
         id="scrollRef"
         ref="scrollRef"
         class="h-full overflow-hidden overflow-y-auto"
-        :class="[isMobile ? 'p-2' : 'p-4']"
       >
-        <div class="w-full max-w-screen-xl m-auto">
+        <div
+          id="image-wrapper"
+          class="w-full max-w-screen-xl m-auto dark:bg-[#101014]"
+          :class="[isMobile ? 'p-2' : 'p-4']"
+        >
           <template v-if="!dataSources.length">
             <div class="flex items-center justify-center mt-4 text-center text-neutral-300">
               <SvgIcon icon="ri:bubble-chart-fill" class="mr-2 text-3xl" />
@@ -692,7 +739,7 @@ onUnmounted(() => {
             </div>
           </template>
           <template v-else>
-            <div>
+            <div> 
               <Message
                 v-for="(item, index) of dataSources"
                 :key="index"
@@ -721,12 +768,17 @@ onUnmounted(() => {
       <div class="w-full max-w-screen-xl m-auto">
         <div class="flex items-center justify-between space-x-2">
           <div v-if="actionVisible" class="flex items-center space-x-2">
-            <!--            <HoverButton @click="handleClear"> -->
-            <!--              <span class="text-xl text-[#4f555e] dark:text-white"> -->
-            <!--                <SvgIcon icon="ri:delete-bin-line" /> -->
-            <!--              </span> -->
-            <!--            </HoverButton> -->
-            <HoverButton
+            <HoverButton @click="handleClear">
+              <span class="text-xl text-[#4f555e] dark:text-white">
+                <SvgIcon icon="ri:delete-bin-line" />
+              </span>
+            </HoverButton>
+            <HoverButton v-if="!isMobile" @click="handleExport">
+              <span class="text-xl text-[#4f555e] dark:text-white">
+                <SvgIcon icon="ri:download-2-line" />
+              </span>
+            </HoverButton>
+            <!-- <HoverButton
               v-if="!audioMode"
               @click="audioMode = !audioMode"
             >
@@ -741,7 +793,7 @@ onUnmounted(() => {
               <span class="text-xl text-[#4f555e] dark:text-white">
                 <SvgIcon icon="material-symbols:keyboard" />
               </span>
-            </HoverButton>
+            </HoverButton> -->
           </div>
           <NInput
             v-if="!audioMode"
@@ -754,7 +806,7 @@ onUnmounted(() => {
             @focus="onInputFocus"
             @blur="onInputBlur"
           />
-          <NButton
+          <!-- <NButton
             v-if="audioMode"
             :disabled="recButtonDisabled"
             style="flex-grow: 2;"
@@ -763,9 +815,8 @@ onUnmounted(() => {
           >
             <span v-if="recording">{{ $t('chat.clickToSend') }}</span>
             <span v-if="!recording">{{ $t('chat.clickToTalk') }}</span>
-          </NButton>
+          </NButton> -->
           <NButton
-            v-if="!audioMode"
             type="primary"
             :disabled="buttonDisabled" @click="handleSubmit"
           >

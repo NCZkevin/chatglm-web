@@ -8,6 +8,7 @@ import html2canvas from 'html2canvas'
 import { useScroll } from './hooks/useScroll'
 import { useChat } from './hooks/useChat'
 import { useCopyCode } from './hooks/useCopyCode'
+import { useUsingContext } from './hooks/useUsingContext'
 import { HoverButton, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useAppStore, useChatStore, useUserStore } from '@/store'
@@ -31,6 +32,7 @@ useCopyCode()
 const { isMobile } = useBasicLayout()
 const { addChat, updateChat, updateChatSome, getChatByUuidAndIndex } = useChat()
 const { scrollRef, scrollToBottom } = useScroll()
+const { usingContext, toggleUsingContext } = useUsingContext()
 
 const { uuid } = route.params as { uuid: string }
 
@@ -148,7 +150,7 @@ async function recStop() {
     let options: Chat.ConversationRequest = {}
     const lastContext = conversationList.value[conversationList.value.length - 1]?.conversationOptions
 
-    if (lastContext)
+    if (lastContext && usingContext.value)
       options = { ...lastContext }
 
     const formData = new FormData()
@@ -305,7 +307,7 @@ async function onConversation() {
   let options: Chat.ConversationRequest = {}
   const lastContext = conversationList.value[conversationList.value.length - 1]?.conversationOptions
 
-  if (lastContext)
+  if (lastContext && usingContext.value)
     options = { ...lastContext }
 
   addChat(
@@ -776,6 +778,11 @@ onUnmounted(() => {
             <HoverButton v-if="!isMobile" @click="handleExport">
               <span class="text-xl text-[#4f555e] dark:text-white">
                 <SvgIcon icon="ri:download-2-line" />
+              </span>
+            </HoverButton>
+            <HoverButton v-if="!isMobile" @click="toggleUsingContext">
+              <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
+                <SvgIcon icon="ri:chat-history-line" />
               </span>
             </HoverButton>
             <!-- <HoverButton

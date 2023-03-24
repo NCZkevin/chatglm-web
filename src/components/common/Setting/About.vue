@@ -52,9 +52,9 @@ onMounted(() => {
         <p v-text="$t(&quot;common.about_head&quot;)" />
         <p v-text="$t(&quot;common.about_body&quot;)" />
       </div>
-      <p>{{ $t("setting.api") }}：{{ config?.apiModel ?? '-' }}</p>
+      <!-- <p>{{ $t("setting.api") }}：{{ config?.apiModel ?? '-' }}</p>
       <p>{{ $t("setting.timeout") }}：{{ config?.timeoutMs ?? '-' }}</p>
-      <p>{{ $t("setting.socks") }}：{{ config?.socksProxy ?? '-' }}</p>
+      <p>{{ $t("setting.socks") }}：{{ config?.socksProxy ?? '-' }}</p> -->
     </div>
   </NSpin>
 </template>

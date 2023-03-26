@@ -54,7 +54,7 @@ export default {
     language: '语言',
 
     chatgpt_memory_title: '记忆力',
-    chatgpt_memory_memo: '记忆力越强，ChatGLM 在对话过程中能记住的上下文越多，但可能会消耗更多的费用',
+    chatgpt_memory_memo: '记忆力越强，ChatGLM 在对话过程中能记住的上下文越多，但可能会消耗更多的显存',
     chatgpt_memory_choice_1: '普通记忆(5条)',
     chatgpt_memory_choice_2: '中等记忆(20条)',
     chatgpt_memory_choice_3: '最强记忆(全部)',

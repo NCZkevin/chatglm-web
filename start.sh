@@ -1,6 +1,6 @@
 
 cd ./service
-nohup pnpm start > service.log &
+nohup python main.py --device 'cuda:0'
 echo "Start service complete!"
 
 

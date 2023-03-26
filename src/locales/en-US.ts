@@ -53,14 +53,14 @@ export default {
     theme: 'Theme',
     language: 'Language',
 
-    chatgpt_memory_title: 'ChatGpt\'s memory capacity',
-    chatgpt_memory_memo: 'The stronger the memory, the more context ChatGPT can remember during conversations, but it may consume more costs.',
+    chatgpt_memory_title: 'ChatGLM\'s memory capacity',
+    chatgpt_memory_memo: 'The stronger the memory, the more context ChatGLM can remember during conversations, but it may consume more costs.',
     chatgpt_memory_choice_1: 'Normal Memory (5 logs)',
     chatgpt_memory_choice_2: 'Medium Memory (20 logs)',
     chatgpt_memory_choice_3: 'Strong Memory (all logs)',
 
-    chatgpt_top_p_title: 'The personality of ChatGpt',
-    chatgpt_top_p_1_memo: 'Tends to precise analysis, reducing the possibility of ChatGPT\'s nonsense.',
+    chatgpt_top_p_title: 'The personality of ChatGLM',
+    chatgpt_top_p_1_memo: 'Tends to precise analysis, reducing the possibility of ChatGLM\'s nonsense.',
     chatgpt_top_p_2_memo: 'Balancing accuracy and creativity in responses.',
     chatgpt_top_p_3_memo: 'Brainstorming mode, tends to provide richer information.',
     chatgpt_top_p_choice_1: 'Accurate',

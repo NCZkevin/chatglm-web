@@ -96,7 +96,7 @@ python main.py --device='cuda:0' --quantize=16 --host='0.0.0.0' --port=3002
 根目录下运行以下命令
 
 ```shell
-# 前端网页的默认端口号是1002，对接的后端服务的默认端口号是3002，可以在 .env 和 .vite.config.ts 文件中修改
+# 前端网页的默认端口号是3000，对接的后端服务的默认端口号是3002，可以在 .env 和 .vite.config.ts 文件中修改
 pnpm bootstrap
 pnpm dev
 ```

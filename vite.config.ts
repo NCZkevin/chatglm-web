@@ -28,7 +28,7 @@ export default defineConfig((env) => {
     ],
     server: {
       host: '0.0.0.0',
-      port: 1002,
+      port: 3000,
       open: false,
       proxy: {
         '/api': {

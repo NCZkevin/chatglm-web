@@ -10,7 +10,6 @@ export function useUsingContext() {
 
   function toggleUsingContext() {
     chatStore.setUsingContext(!usingContext.value)
-    console.log(usingContext.value)
     if (usingContext.value)
       ms.success(t('chat.turnOnContext'))
     else

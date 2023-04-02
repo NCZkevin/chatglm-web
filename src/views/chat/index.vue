@@ -3,8 +3,8 @@ import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { NButton, NInput, useDialog, useMessage } from 'naive-ui'
 import Recorder from 'recorder-core/recorder.mp3.min'
-import { Message } from './components'
 import html2canvas from 'html2canvas'
+import { Message } from './components'
 import { useScroll } from './hooks/useScroll'
 import { useChat } from './hooks/useChat'
 import { useCopyCode } from './hooks/useCopyCode'
@@ -741,7 +741,7 @@ onUnmounted(() => {
             </div>
           </template>
           <template v-else>
-            <div> 
+            <div>
               <Message
                 v-for="(item, index) of dataSources"
                 :key="index"

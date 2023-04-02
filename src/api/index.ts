@@ -11,9 +11,9 @@ export function fetchChatAPIProcess<T = any>(
   params: {
     prompt: string
     memory: number
-    top_p: number,
-    max_length: number,
-    temperature: number,
+    top_p: number
+    max_length: number
+    temperature: number
     options?: { conversationId?: string; parentMessageId?: string }
     signal?: GenericAbortSignal
     onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void

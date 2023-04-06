@@ -1,25 +1,6 @@
 # ChatGLM Web
 
-![cover](./docs/index.png)
-
-- [ChatGLM Web](#chatglm-web)
-	- [介绍](#介绍)
-	- [快速部署](#快速部署)
-	- [开发环境搭建](#开发环境搭建)
-		- [Node](#Node)
-		- [PNPM](#PNPM)
-		- [Python](#Python)
-	- [开发环境启动项目](#开发环境启动项目)
-		- [后端](#后端服务)
-		- [前端](#前端网页)
-	- [打包为docker容器](#打包为docker容器)
-		- [前端打包](#前端资源打包(需要安装node和docker、docker-compose))
-		- [后端打包](#后端服务打包)
-	- [使用DockerCompose启动](#使用DockerCompose启动)
-	- [常见问题](#常见问题)
-	- [参与贡献](#参与贡献)
-	- [赞助原作者](#赞助)
-	- [License](#license)
+![cover](./docs/chatglm.gif)
 
 ## 介绍
 
@@ -32,9 +13,11 @@
 2. **完全离线**。`ChatGLM Web`依赖于`ChatGLM-6B`模型，可以在离线环境或者内网中使用。
 
 ## 待实现路线
-[✗] 支持chatgpt模型效果对比
+[✗] 支持chatglm、llama等模型
 
 [✗] 追上原仓库的功能（权限控制、图片、消息导入导出、Prompt Store）
+
+[✗] 支持langchain的知识问答
 
 [✗] More...
 
@@ -74,6 +57,13 @@ pip install --no-cache-dir -r requirements.txt
 
 ### 后端服务
 
+#### 硬件需求（参考自chatglm-6b官方仓库）
+
+| **量化等级**   | **最低 GPU 显存**（推理） | **最低 GPU 显存**（高效参数微调） |
+| -------------- | ------------------------- | --------------------------------- |
+| FP16（无量化） | 13 GB                     | 14 GB                             |
+| INT8           | 8 GB                     | 9 GB                             |
+| INT4           | 6 GB                      | 7 GB                              |
 
 ```shell
 # 进入文件夹 `/service` 运行以下命令
@@ -86,7 +76,7 @@ python main.py
 - `host` HOST，默认值为 0.0.0.0
 - `port` PORT，默认值为 3002
 
-也就是说你也可以这样启动
+也就是说可以这样启动
 ```shell
 python main.py --device='cuda:0' --quantize=16 --host='0.0.0.0' --port=3002
 ```

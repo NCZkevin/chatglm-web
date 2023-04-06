@@ -11,7 +11,9 @@ lerna-debug.log*
 #backend
 service/venv
 service/message_store.json
-
+__pycache__/
+*.py[cod]
+*$py.class
 docker-compose/nginx/html
 
 node_modules

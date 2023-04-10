@@ -9,6 +9,7 @@ import { useScroll } from './hooks/useScroll'
 import { useChat } from './hooks/useChat'
 import { useCopyCode } from './hooks/useCopyCode'
 import { useUsingContext } from './hooks/useUsingContext'
+import { useUsingKnowledge } from './hooks/useUsingKnowledge'
 import { HoverButton, SvgIcon } from '@/components/common'
 import { useBasicLayout } from '@/hooks/useBasicLayout'
 import { useAppStore, useChatStore, useUserStore } from '@/store'
@@ -33,6 +34,7 @@ const { isMobile } = useBasicLayout()
 const { addChat, updateChat, updateChatSome, getChatByUuidAndIndex } = useChat()
 const { scrollRef, scrollToBottom } = useScroll()
 const { usingContext, toggleUsingContext } = useUsingContext()
+const { usingKnowledge, toggleUsingKnowledge } = useUsingKnowledge()
 
 const { uuid } = route.params as { uuid: string }
 
@@ -332,6 +334,7 @@ async function onConversation() {
       top_p: userInfo.value.chatgpt_top_p,
       max_length: userInfo.value.chatgpt_max_length,
       temperature: userInfo.value.chatgpt_temperature,
+      is_knowledge: usingKnowledge.value,
       options,
       signal: controller.signal,
       onDownloadProgress: ({ event }) => {
@@ -476,6 +479,7 @@ async function onRegenerate(index: number) {
       top_p: userInfo.value.chatgpt_top_p,
       max_length: userInfo.value.chatgpt_max_length,
       temperature: userInfo.value.chatgpt_temperature,
+      is_knowledge: usingKnowledge.value,
       options,
       signal: controller.signal,
       onDownloadProgress: ({ event }) => {
@@ -783,6 +787,11 @@ onUnmounted(() => {
             <HoverButton v-if="!isMobile" @click="toggleUsingContext">
               <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingContext, 'text-[#a8071a]': !usingContext }">
                 <SvgIcon icon="ri:chat-history-line" />
+              </span>
+            </HoverButton>
+            <HoverButton v-if="!isMobile" @click="toggleUsingKnowledge">
+              <span class="text-xl" :class="{ 'text-[#4b9e5f]': usingKnowledge, 'text-[#a8071a]': !usingKnowledge }">
+                <SvgIcon icon="carbon:ibm-watson-knowledge-catalog" />
               </span>
             </HoverButton>
             <!-- <HoverButton

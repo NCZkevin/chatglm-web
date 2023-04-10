@@ -12,7 +12,8 @@ from fastapi.responses import JSONResponse, StreamingResponse
 from message_store import MessageStore
 from transformers import AutoModel, AutoTokenizer
 from errors import Errors
-
+import knowledge
+import gen_data
 
 log_folder = os.path.join(abspath(dirname(__file__)), "log")
 logger.add(os.path.join(log_folder, "{time}.log"), level="INFO")
@@ -43,7 +44,7 @@ async def config():
 
 
 
-async def process(prompt, options, params, message_store, history=None):
+async def process(prompt, options, params, message_store, is_knowledge, history=None):
     """
     发文字消息
     """
@@ -88,13 +89,21 @@ async def process(prompt, options, params, message_store, history=None):
                     continue
 
         uid = "chatglm"+uuid.uuid4().hex
+        footer=''
+        if is_knowledge:
+            response_d = knowledge.find_whoosh(prompt)
+            output_sources = [i['title'] for i in response_d]
+            results ='\n---\n'.join([i['content'] for i in response_d])
+            prompt=  f'system:基于以下内容，用中文简洁和专业回答用户的问题。\n\n'+results+'\nuser:'+prompt
+            footer=  "\n参考：\n"+('\n').join(output_sources)+''
+        # yield footer
         for response, history in model.stream_chat(tokenizer, prompt, history_formatted, max_length=params['max_length'], 
                                                     top_p=params['top_p'], temperature=params['temperature']):
             message = json.dumps(dict(
                 role="AI",
                 id=uid,
                 parentMessageId=parent_message_id,
-                text=response,
+                text=response+footer,
             ))
             yield "data: " + message
 
@@ -140,13 +149,14 @@ async def chat_process(request_data: dict):
         temperature = 0.9
     if top_p is None:
         top_p = 0.7
+    is_knowledge = request_data['is_knowledge']
     params = {
         "max_length": max_length,
         "top_p": top_p,
         "temperature": temperature,
         "memory_count": memory_count
     }
-    answer_text = process(prompt, options, params, massage_store)
+    answer_text = process(prompt, options, params, massage_store, is_knowledge)
     return StreamingResponse(content=answer_text, headers=stream_response_headers, media_type="text/event-stream")
 
 
@@ -174,5 +184,5 @@ if __name__ == "__main__":
         else:
             model = AutoModel.from_pretrained(model_name, trust_remote_code=True).half().quantize(quantize).cuda()
     model = model.eval()
-
+    gen_data.gen_whoosh_data()
     uvicorn.run(app, host=args.host, port=args.port)

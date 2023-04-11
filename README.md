@@ -5,7 +5,7 @@
 ## 介绍
 
 这是一个可以自己在本地部署的`ChatGLM`网页，使用`ChatGLM-6B`模型来实现接近`ChatGPT`的对话效果。
-源代码Fork和修改于[Chanzhaoyu/chatgpt-web](https://github.com/Chanzhaoyu/chatgpt-web/) & [WenJing95/chatgpt-web](https://github.com/WenJing95/chatgpt-web/)
+源代码Fork和修改于[Chanzhaoyu/chatgpt-web](https://github.com/Chanzhaoyu/chatgpt-web/) & [WenJing95/chatgpt-web](https://github.com/WenJing95/chatgpt-web/)& 开源模型[ChatGLM](https://github.com/THUDM/ChatGLM-6B)
 
 与`ChatGPT`对比，`ChatGLM Web`有以下优势：
 

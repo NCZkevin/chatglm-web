@@ -97,7 +97,7 @@ async def process(prompt, options, params, message_store, is_knowledge, history=
             prompt=  f'system:基于以下内容，用中文简洁和专业回答用户的问题。\n\n'+results+'\nuser:'+prompt
             footer=  "\n参考：\n"+('\n').join(output_sources)+''
         # yield footer
-        for response, history in model.stream_chat(tokenizer, prompt, history_formatted, max_length=params['max_length'], 
+        for response, history in model.stream_chat(tokenizer, prompt, history_formatted, max_length=params['max_length'],
                                                     top_p=params['top_p'], temperature=params['temperature']):
             message = json.dumps(dict(
                 role="AI",
@@ -184,5 +184,4 @@ if __name__ == "__main__":
         else:
             model = AutoModel.from_pretrained(model_name, trust_remote_code=True).half().quantize(quantize).cuda()
     model = model.eval()
-    gen_data.gen_whoosh_data()
     uvicorn.run(app, host=args.host, port=args.port)

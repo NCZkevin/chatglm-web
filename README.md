@@ -66,6 +66,8 @@ pip install --no-cache-dir -r requirements.txt
 | INT4           | 6 GB                      | 7 GB                              |
 
 ```shell
+# 使用知识库功能需要在启动API前运行
+python gen_data.py
 # 进入文件夹 `/service` 运行以下命令
 python main.py
 ```
@@ -76,7 +78,7 @@ python main.py
 - `host` HOST，默认值为 0.0.0.0
 - `port` PORT，默认值为 3002
 
-也就是说可以这样启动
+也就是说可以这样启动（这里修改端口的话前端也需要修改，建议使用默认端口）
 ```shell
 python main.py --device='cuda:0' --quantize=16 --host='0.0.0.0' --port=3002
 ```

@@ -3,23 +3,23 @@ version: '3'
 services:
   app:
     # 根据自己的系统选择x86_64还是aarch64
-    image: wenjing95/chatgpt-web-backend:x86_64
+    image: chatglm
     # image: wenjing95/chatgpt-web-backend:aarch64
     ports:
       - 3002:3002
     environment:
-      OPENAI_API_KEY: ''
-      # 访问OpenAI的超时时间，可选，默认值为 '100000'
-      OPENAI_TIMEOUT_MS: '100000'
-      # 可选，默认值为 gpt-3.5-turbo
-      API_MODEL: gpt-3.5-turbo
-      # Socks代理，可选，格式为 http://127.0.0.1:10808
-      SOCKS_PROXY: ''
+      model_path: "/model"
+      Device: "cpu"
+      Quantize: 16
       # HOST，可选，默认值为 0.0.0.0
       HOST: 0.0.0.0
       # PORT，可选，默认值为 3002
       PORT: 3002
+    volumes:
+      - /home/zkw/code/gpt/chatglm-6b-int4:/model
   nginx:
+    depends_on:
+      - app
     image: nginx:alpine
     ports:
       - '80:80'

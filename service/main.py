@@ -167,21 +167,22 @@ if __name__ == "__main__":
     parser.add_argument('--host', '-H', type=str, help='监听Host', default='0.0.0.0')
     parser.add_argument('--port', '-P', type=int, help='监听端口号', default=3002)
     args = parser.parse_args()
-    model_name = "THUDM/chatglm-6b"
+
+    import os
+    model_path = os.getenv('model_path')
+    # model_name = "THUDM/chatglm-6b"
     quantize = int(args.quantize)
-    tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True)
     model = None
     if args.device == 'cpu':
-        if quantize == 8:
-            print('cpu模式下量化等级只能是16或4，使用4')
-            model_name = "THUDM/chatglm-6b-int4"
-        elif quantize == 4:
-            model_name = "THUDM/chatglm-6b-int4"
-        model = AutoModel.from_pretrained(model_name, trust_remote_code=True).float()
+        model_path = model_path if  model_path else "THUDM/chatglm-6b-int4" 
+        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+        model = AutoModel.from_pretrained(model_path, trust_remote_code=True).float()
     else:
+        model_path = model_path if  model_path else "THUDM/chatglm-6b" 
+        tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         if quantize == 16:
-            model = AutoModel.from_pretrained(model_name, trust_remote_code=True).half().cuda()
+            model = AutoModel.from_pretrained(model_path, trust_remote_code=True).half().cuda()
         else:
-            model = AutoModel.from_pretrained(model_name, trust_remote_code=True).half().quantize(quantize).cuda()
+            model = AutoModel.from_pretrained(model_path, trust_remote_code=True).half().quantize(quantize).cuda()
     model = model.eval()
     uvicorn.run(app, host=args.host, port=args.port)

@@ -174,11 +174,11 @@ if __name__ == "__main__":
     quantize = int(args.quantize)
     model = None
     if args.device == 'cpu':
-        model_path = model_path if  model_path else "THUDM/chatglm-6b-int4" 
+        model_path = model_path if  model_path else "THUDM/chatglm2-6b-int4" 
         tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         model = AutoModel.from_pretrained(model_path, trust_remote_code=True).float()
     else:
-        model_path = model_path if  model_path else "THUDM/chatglm-6b" 
+        model_path = model_path if  model_path else "THUDM/chatglm2-6b" 
         tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
         if quantize == 16:
             model = AutoModel.from_pretrained(model_path, trust_remote_code=True).half().cuda()

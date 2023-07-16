@@ -3,6 +3,7 @@
 ![cover](./docs/chatglm.gif)
 
 ## 介绍
+> 默认模型更改为ChatGLM2-6B
 
 这是一个可以自己在本地部署的`ChatGLM`网页，使用`ChatGLM-6B`模型来实现接近`ChatGPT`的对话效果。
 源代码Fork和修改于[Chanzhaoyu/chatgpt-web](https://github.com/Chanzhaoyu/chatgpt-web/) & [WenJing95/chatgpt-web](https://github.com/WenJing95/chatgpt-web/)& 开源模型[ChatGLM](https://github.com/THUDM/ChatGLM-6B)
@@ -15,7 +16,7 @@
 ## 待实现路线
 [✗] 支持chatglm、llama等模型
 
-[✗] 追上原仓库的功能（权限控制、图片、消息导入导出、Prompt Store）
+[✓] 追上原仓库的功能（权限控制、图片、消息导入导出、Prompt Store）
 
 [✗] 支持langchain的知识问答
 
